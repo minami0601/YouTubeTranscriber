@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api import NoTranscriptAvailable, TranscriptsDisabled
 from utils import extract_video_id
@@ -9,7 +9,9 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "youtube-transcriber-secr
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    response = make_response(render_template('index.html'))
+    response.headers['Content-Type'] = 'text/html; charset=utf-8'
+    return response
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
