@@ -62,5 +62,22 @@ def transcribe():
             'error': f'エラーが発生しました: {str(e)}'
         }), 500
 
+@app.route('/download-transcript', methods=['POST'])
+def download_transcript():
+    try:
+        transcript = request.json.get('transcript', '')
+        if not transcript:
+            return jsonify({'error': 'テキストが見つかりません'}), 400
+            
+        response = make_response(transcript)
+        response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+        response.headers['Content-Disposition'] = 'attachment; filename=transcript.txt'
+        return response
+        
+    except Exception as e:
+        return jsonify({
+            'error': f'ダウンロード中にエラーが発生しました: {str(e)}'
+        }), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -55,4 +55,43 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Failed to copy text:', err);
         }
     });
+
+    const downloadButton = document.getElementById('downloadButton');
+    downloadButton.addEventListener('click', async function() {
+        try {
+            const response = await fetch('/download-transcript', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    transcript: transcriptText.textContent
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('ダウンロードに失敗しました');
+            }
+
+            // レスポンスをBlobとして取得
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            // 一時的なリンクを作成してクリック
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'transcript.txt';
+            document.body.appendChild(a);
+            a.click();
+            
+            // クリーンアップ
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+        } catch (error) {
+            console.error('Failed to download:', error);
+            errorAlert.textContent = error.message;
+            errorAlert.classList.remove('d-none');
+        }
+    });
 });

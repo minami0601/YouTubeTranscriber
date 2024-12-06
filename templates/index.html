@@ -39,9 +39,14 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="card-title mb-0">文字起こし結果</h5>
-                            <button class="btn btn-secondary btn-sm" id="copyButton">
-                                <i class="bi bi-clipboard"></i> コピー
-                            </button>
+                            <div>
+                                <button class="btn btn-secondary btn-sm me-2" id="copyButton">
+                                    <i class="bi bi-clipboard"></i> コピー
+                                </button>
+                                <button class="btn btn-secondary btn-sm" id="downloadButton">
+                                    <i class="bi bi-download"></i> ダウンロード
+                                </button>
+                            </div>
                         </div>
                         <div id="transcriptText" class="transcript-text"></div>
                     </div>
