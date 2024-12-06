@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 transcriptText.textContent = data.transcript;
                 resultCard.classList.remove('d-none');
             } else {
-                throw new Error(data.error || 'Failed to get transcript');
+                throw new Error(data.error || '文字起こしの取得に失敗しました');
             }
         } catch (error) {
             errorAlert.textContent = error.message;
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Visual feedback
             const originalText = copyButton.innerHTML;
-            copyButton.innerHTML = '<i class="bi bi-check"></i> Copied!';
+            copyButton.innerHTML = '<i class="bi bi-check"></i> コピーしました！';
             setTimeout(() => {
                 copyButton.innerHTML = originalText;
             }, 2000);

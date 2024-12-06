@@ -12,18 +12,18 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1 class="text-center mb-4">YouTube Transcriber</h1>
+                <h1 class="text-center mb-4">YouTube 文字起こしツール</h1>
                 
                 <div class="card mb-4">
                     <div class="card-body">
                         <form id="transcribeForm">
                             <div class="mb-3">
-                                <label for="youtubeUrl" class="form-label">YouTube URL</label>
+                                <label for="youtubeUrl" class="form-label">YouTube動画のURL</label>
                                 <input type="url" class="form-control" id="youtubeUrl" 
                                        placeholder="https://www.youtube.com/watch?v=..." required>
                             </div>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-file-text"></i> Get Transcript
+                                <i class="bi bi-file-text"></i> 文字起こしを取得
                             </button>
                         </form>
                     </div>
@@ -31,16 +31,16 @@
 
                 <div id="loadingSpinner" class="text-center d-none">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">読み込み中...</span>
                     </div>
                 </div>
 
                 <div id="resultCard" class="card d-none">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="card-title mb-0">Transcript</h5>
+                            <h5 class="card-title mb-0">文字起こし結果</h5>
                             <button class="btn btn-secondary btn-sm" id="copyButton">
-                                <i class="bi bi-clipboard"></i> Copy
+                                <i class="bi bi-clipboard"></i> コピー
                             </button>
                         </div>
                         <div id="transcriptText" class="transcript-text"></div>

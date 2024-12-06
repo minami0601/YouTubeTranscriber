@@ -20,22 +20,45 @@ def transcribe():
         if not video_id:
             return jsonify({'error': 'Invalid YouTube URL'}), 400
 
-        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
         
-        # Combine all transcript parts into one text
-        full_transcript = ' '.join([entry['text'] for entry in transcript_list])
+        # まず日本語の文字起こしを試みる
+        try:
+            transcript = transcript_list.find_transcript(['ja'])
+        except NoTranscriptAvailable:
+            # 日本語が無い場合は英語を試みる
+            try:
+                transcript = transcript_list.find_transcript(['en'])
+            except NoTranscriptAvailable:
+                # 利用可能な言語のリストを取得
+                available_transcripts = transcript_list.manual_transcripts
+                if not available_transcripts:
+                    available_transcripts = transcript_list.generated_transcripts
+                
+                if not available_transcripts:
+                    raise NoTranscriptAvailable("No transcripts available")
+                
+                # 最初に見つかった文字起こしを使用
+                transcript = list(available_transcripts.values())[0]
+        
+        transcript_data = transcript.fetch()
+        full_transcript = ' '.join([entry['text'] for entry in transcript_data])
         
         return jsonify({
             'success': True,
             'transcript': full_transcript,
-            'video_id': video_id
+            'video_id': video_id,
+            'language': transcript.language_code
         })
 
-    except (TranscriptsDisabled, NoTranscriptAvailable):
+    except (TranscriptsDisabled, NoTranscriptAvailable) as e:
         return jsonify({
             'error': 'この動画の文字起こしは利用できません'
         }), 400
     except Exception as e:
         return jsonify({
-            'error': f'An error occurred: {str(e)}'
+            'error': f'エラーが発生しました: {str(e)}'
         }), 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
